@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.dynamic-h-100 {
+    height: calc(100vh - 16px);
+}
+
+.contain-strict {
+    contain: strict;
+}

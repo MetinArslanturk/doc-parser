@@ -98,7 +98,15 @@ export interface Value {
 export interface Diff {
   startIndex: number;
   endIndex: number;
-  payload: string;
+  payload: PayloadType;
+}
+
+export enum PayloadType {
+  Del = 'DEL',
+  DelBlock = 'DEL_BLOCK',
+  Ins = 'INS',
+  Move = 'MOVE',
+  Noop = 'NOOP',
 }
 
 export interface Formatting {
