@@ -97,7 +97,7 @@ const App = () => {
                     )}
                     {listItemLabel && <span>{listItemLabel}&nbsp;</span>}
                     {tokens.map((token, tokenIndex) => {
-                      let combinedClassName = '';
+                      let combinedClassName = 'p-text';
                       const formattingDescriptor = token.descriptors.find(
                         (desc) => desc.type === DescriptorType.Formatting
                       );
@@ -136,8 +136,73 @@ const App = () => {
                         );
                       }
 
+                      const definitionDescriptor = token.descriptors.find(
+                        (desc) => desc.type === DescriptorType.Definition
+                      );
+
+                      const definition = definitionDescriptor?.definition;
+
+                      if (definition) {
+                        combinedClassName = cn(
+                          combinedClassName,
+                          'underline decoration-dotted hover:decoration-solid hover:cursor-pointer'
+                        );
+                      }
+
+                      const definitionSourceDescriptor = token.descriptors.find(
+                        (desc) => desc.type === DescriptorType.DefinitionSource
+                      );
+
+                      const definitionSource =
+                        definitionSourceDescriptor?.definitionSource;
+
+                      if (definitionSource) {
+                        combinedClassName = cn(
+                          combinedClassName,
+                          'underline decoration-dotted hover:decoration-solid'
+                        );
+                      }
+
+                      const searchFilterDescriptor = token.descriptors.find(
+                        (desc) =>
+                          desc.type === DescriptorType.SearchResult ||
+                          desc.type === DescriptorType.FilterText
+                      );
+
+                      if (searchFilterDescriptor) {
+                        combinedClassName = cn(
+                          combinedClassName,
+                          'bg-yellow-200'
+                        );
+                      }
+
+                      const clauseSnippetDescriptor = token.descriptors.find(
+                        (desc) => desc.type === DescriptorType.ClauseSnippetTag
+                      );
+
+                      const clauseSnippetTag =
+                        clauseSnippetDescriptor?.clauseSnippetTag;
+
+                      if (clauseSnippetTag) {
+                        combinedClassName = cn(
+                          combinedClassName,
+                          'bg-gray-300'
+                        );
+                      }
+
                       return (
-                        <span className={combinedClassName} key={tokenIndex}>
+                        <span
+                          className={combinedClassName}
+                          key={tokenIndex}
+                          role={definition ? 'button' : undefined}
+                          onClick={
+                            definition
+                              ? () => {
+                                  console.log('Clicked definition');
+                                }
+                              : undefined
+                          }
+                        >
                           {token.text}
                         </span>
                       );

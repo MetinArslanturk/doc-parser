@@ -124,4 +124,6 @@ export enum DescriptorType {
   DefinitionSource = 'definitionSource',
   Diff = 'diff',
   Formatting = 'formatting',
+  SearchResult = 'searchResult',
+  FilterText = 'filterText',
 }
