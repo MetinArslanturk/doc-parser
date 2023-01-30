@@ -9,10 +9,8 @@ const App = () => {
   const windowSize = useWindowSize();
   const estimatedSize = getEstimatedParagprahSize(windowSize.width, docData);
   return (
-    <div className="flex justify-center py-2">
-      <div className="min-w-[25rem] w-full sm:w-1/2 max-w-7xl h-screen border-2 border-gray-200 py-2">
-        <VirtualizedDocument docData={docData} estimatedSize={estimatedSize} />
-      </div>
+    <div className="min-w-[25rem] w-full sm:w-1/2 max-w-7xl h-screen border-2 border-gray-200 my-2 py-2 m-auto">
+      <VirtualizedDocument docData={docData} estimatedSize={estimatedSize} />
     </div>
   );
 };
