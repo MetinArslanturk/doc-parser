@@ -27,10 +27,15 @@ const DocumentToken = ({ tokenIndex, token, asPopover, paragraphIndex, definitio
   const isPopoverOpenForToken =
     definitionPopover && paragraphIndex === definitionPopover.pIndex && tokenIndex === definitionPopover.tokenIndex;
 
-  const combinedClassName = cn(mapDescriptorsToClassName(INITIAL_TOKEN_CLASS_NAME, token.descriptors), {
-    'pt-40 relative': isPopoverOpenForToken,
-    'hover:cursor-pointer': !!definition && !asPopover,
-  });
+  const combinedClassName = cn(
+    token.preMappedClassName !== undefined
+      ? token.preMappedClassName
+      : mapDescriptorsToClassName(INITIAL_TOKEN_CLASS_NAME, token.descriptors),
+    {
+      'pt-40 relative': isPopoverOpenForToken,
+      'hover:cursor-pointer': !!definition && !asPopover,
+    },
+  );
 
   return (
     <span

@@ -17,6 +17,7 @@ export enum ParagraphAlignment {
 export interface Token {
   text: string;
   descriptors: Descriptor[];
+  preMappedClassName?: string;
 }
 
 export interface Descriptor {

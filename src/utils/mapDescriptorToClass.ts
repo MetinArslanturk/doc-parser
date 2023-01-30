@@ -1,6 +1,6 @@
 import cn from 'classnames';
-import { Descriptor, DescriptorType } from '../types/document';
-import { DIFF_PAYLOAD_CLASS_MAPPING } from './constants';
+import { Descriptor, DescriptorType, IDocument } from '../types/document';
+import { DIFF_PAYLOAD_CLASS_MAPPING, INITIAL_TOKEN_CLASS_NAME } from './constants';
 
 const formattingDescriptorToClassName = (combinedClassName: string, descriptor: Descriptor) => {
   const formatting = descriptor.formatting;
@@ -84,4 +84,12 @@ export const mapDescriptorsToClassName = (combinedClassName: string, descriptors
   }, combinedClassName);
 
   return newCombinedClassName;
+};
+
+export const preMapAllDescriptorsToClassNames = (docData: IDocument[]) => {
+  docData.forEach((paragraph) => {
+    paragraph.tokens.forEach((token) => {
+      token.preMappedClassName = mapDescriptorsToClassName(INITIAL_TOKEN_CLASS_NAME, token.descriptors);
+    });
+  });
 };
