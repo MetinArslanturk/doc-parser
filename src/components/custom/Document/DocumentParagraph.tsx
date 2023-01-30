@@ -30,7 +30,7 @@ const DocumentParagraph = ({ paragraphItem, paragraphIndex, virtualizer }: Props
   return (
     <div
       data-index={paragraphIndex}
-      className={cn('border border-red-200 py-2 px-2', {
+      className={cn('py-2 px-2', {
         relative: paragraphIndex === definitionPopover?.pIndex,
       })}
       ref={virtualizer.measureElement}

@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { DescriptorType, Token } from '../../../types/document';
-import { mapDescriptorsToClassName } from '../../../utils/map-descriptor-to-class';
-import DownArrowIcon from '../../ui-elements/DownArrowIcon';
+import { mapDescriptorsToClassName } from '../../../utils/mapDescriptorToClass';
+import DownArrowIcon from '../../elements/DownArrowIcon';
 
 const INITIAL_TOKEN_CLASS_NAME = '';
 

@@ -2,6 +2,12 @@ import { DiffPayloadType, ParagraphAlignment } from '../types/document';
 
 export const DEFAULT_MAX_TEXT_LENGTH = 300;
 export const DEFAULT_INITIAL_SCREEN_WIDTH = 800;
+export const SM_SCREEN_BREAKPOINT = 640;
+export const CONTAINER_MIN_WIDTH = 400;
+export const CONTAINER_MAX_WIDTH = 1280;
+export const CHAR_LENGTH = 8;
+export const LINE_LENGTH = 20;
+export const INITIAL_MAX_PARAGRAPH_HEIGHT = 1500;
 
 export const PARAGRAPH_ALIGNMENT_CLASS_MAPPING = {
   [ParagraphAlignment.Left]: 'text-left',

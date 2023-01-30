@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.dynamic-h-100 {
-  height: calc(100vh - 16px);
-}
-
 .contain-strict {
   contain: strict;
 }
@@ -20,7 +16,7 @@ body {
 }
 
 .popover {
-  width: 96%;
+  width: 98%;
 }
 
 .absolute-center {
