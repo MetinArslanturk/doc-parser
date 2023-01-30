@@ -49,6 +49,9 @@ const VirtualizedDocument = ({ docData, estimatedSize, asPopover = false }: Prop
             transform: `translateY(${docItems[0].start}px)`,
           }}
         >
+          {definitionPopoverSpecs.definitionPopover && (
+            <div className="absolute h-full w-full backdrop-blur-xs backdrop-opacity-60 z-10"></div>
+          )}
           {docItems.map(({ index }) => (
             <DocumentParagraph
               key={index}

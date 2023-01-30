@@ -28,7 +28,7 @@ const DocumentDefinitionPopover = ({
   const indexParam = searchParams.get('index');
   return (
     <span
-      className="absolute h-40 border border-gray-500 bg-white rounded-md left-0 transition-opacity duration-300 z-10 inline-block popover absolute-center cursor-pointer"
+      className="absolute h-40 border border-gray-500 bg-white rounded-md left-0 transition-opacity duration-300 z-20 inline-block popover absolute-center cursor-pointer"
       style={{ top: popoverYPosition + 'px' }}
       onClick={(e) => {
         e.stopPropagation();

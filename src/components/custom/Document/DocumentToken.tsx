@@ -32,7 +32,7 @@ const DocumentToken = ({ tokenIndex, token, asPopover, paragraphIndex, definitio
       ? token.preMappedClassName
       : mapDescriptorsToClassName(INITIAL_TOKEN_CLASS_NAME, token.descriptors),
     {
-      'pt-40 relative': isPopoverOpenForToken,
+      'pt-40 relative z-30': isPopoverOpenForToken,
       'hover:cursor-pointer': !!definition && !asPopover,
     },
   );
