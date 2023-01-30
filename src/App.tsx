@@ -1,5 +1,5 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import cn from 'classnames';
 import documentData from './assets/document.json';
 import {
@@ -7,9 +7,21 @@ import {
   DescriptorType,
   ParagraphAlignment,
   PayloadType,
+  Descriptor,
 } from './types/document';
+import useOnClickOutside from './hooks/useOnClickOutside';
 
 const App = () => {
+  const [definitionPopover, setDefinitionPopover] = useState<
+    { pIndex: number; tokenIndex: number } | undefined
+  >(undefined);
+  const [popoverYPosition, setPopoverYPosition] = useState(0);
+  const definitionPopoverRef = useRef<HTMLSpanElement>(null);
+
+  useOnClickOutside(definitionPopoverRef, () => {
+    setDefinitionPopover(undefined);
+  });
+
   const docData = documentData as IDocument[];
   const scrollableParentRef = useRef<HTMLDivElement>(null);
   const count = docData.length;
@@ -74,17 +86,30 @@ const App = () => {
                   : paragraphAlignment === ParagraphAlignment.Center
                   ? 'text-center'
                   : 'text-justify';
+
               return (
                 <div
                   key={docItem.index}
                   data-index={docItem.index}
-                  className="border border-red-200 py-2 px-2"
+                  className={cn('border border-red-200 py-2 px-2', {
+                    relative: docItem.index === definitionPopover?.pIndex,
+                  })}
                   ref={virtualizer.measureElement}
                 >
                   <p
                     className={cn(alignmentClass, 'whitespace-pre-wrap')}
                     style={{ marginLeft: indentationLevel + 'rem' }}
                   >
+                    {docItem.index === definitionPopover?.pIndex && (
+                      <span
+                        className="absolute h-40 border border-red-400 left-0 transition-opacity duration-300 w-full z-10 bg-red-400 inline-block"
+                        style={{ top: popoverYPosition + 'px' }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                        ref={definitionPopoverRef}
+                      ></span>
+                    )}
                     {firstLineIndentationLevel !== 0 && (
                       <span
                         style={{
@@ -138,14 +163,14 @@ const App = () => {
 
                       const definitionDescriptor = token.descriptors.find(
                         (desc) => desc.type === DescriptorType.Definition
-                      );
+                      ) as Descriptor | undefined;
 
                       const definition = definitionDescriptor?.definition;
 
                       if (definition) {
                         combinedClassName = cn(
                           combinedClassName,
-                          'underline decoration-dotted hover:decoration-solid hover:cursor-pointer'
+                          'underline decoration-dotted hover:decoration-solid hover:cursor-pointer inline-block'
                         );
                       }
 
@@ -190,6 +215,10 @@ const App = () => {
                         );
                       }
 
+                      if (tokenIndex === definitionPopover?.tokenIndex) {
+                        combinedClassName = cn(combinedClassName, 'pt-40');
+                      }
+
                       return (
                         <span
                           className={combinedClassName}
@@ -197,8 +226,25 @@ const App = () => {
                           role={definition ? 'button' : undefined}
                           onClick={
                             definition
-                              ? () => {
+                              ? (e) => {
+                                  const elementClickedYDistance =
+                                    e.clientY -
+                                    e.currentTarget.getBoundingClientRect().top;
+
+                                  const parentRect =
+                                    // @ts-ignore
+                                    e.currentTarget.parentElement.getBoundingClientRect();
+                                  setPopoverYPosition(
+                                    e.clientY -
+                                      parentRect.top -
+                                      elementClickedYDistance +
+                                      5
+                                  );
                                   console.log('Clicked definition');
+                                  setDefinitionPopover({
+                                    pIndex: docItem.index,
+                                    tokenIndex,
+                                  });
                                 }
                               : undefined
                           }
@@ -217,5 +263,20 @@ const App = () => {
     </div>
   );
 };
+
+{
+  /* <svg
+className="absolute h-3 left-4 top-full"
+x="0px"
+y="0px"
+viewBox="0 0 510 510"
+xmlSpace="preserve"
+>
+<polygon
+  className="fill-current"
+  points="0,0 255,255 510,0"
+/>
+</svg> */
+}
 
 export default App;
