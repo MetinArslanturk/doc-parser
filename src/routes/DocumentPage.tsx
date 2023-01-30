@@ -23,7 +23,7 @@ const DocumentPage = () => {
     );
   }
   return (
-    <div className="min-w-[25rem] w-full sm:w-1/2 max-w-7xl h-screen border-2 border-gray-200 my-2 py-2 m-auto">
+    <div className="min-w-[25rem] w-full sm:w-1/2 max-w-7xl h-screen border-2 border-gray-200 my-1 py-2 m-auto">
       <ErrorBoundary>
         <VirtualizedDocument docData={docData} estimatedSize={estimatedSize} />
       </ErrorBoundary>
