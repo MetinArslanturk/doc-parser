@@ -1,9 +1,8 @@
 import cn from 'classnames';
 import { DescriptorType, Token } from '../../../types/document';
+import { INITIAL_TOKEN_CLASS_NAME } from '../../../utils/constants';
 import { mapDescriptorsToClassName } from '../../../utils/mapDescriptorToClass';
 import DownArrowIcon from '../../elements/DownArrowIcon';
-
-const INITIAL_TOKEN_CLASS_NAME = '';
 
 interface Props {
   tokenIndex: number;

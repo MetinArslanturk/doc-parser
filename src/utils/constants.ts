@@ -9,6 +9,8 @@ export const CHAR_LENGTH = 8;
 export const LINE_LENGTH = 20;
 export const INITIAL_MAX_PARAGRAPH_HEIGHT = 1500;
 
+export const INITIAL_TOKEN_CLASS_NAME = '';
+
 export const PARAGRAPH_ALIGNMENT_CLASS_MAPPING = {
   [ParagraphAlignment.Left]: 'text-left',
   [ParagraphAlignment.Center]: 'text-center',
