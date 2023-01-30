@@ -42,6 +42,7 @@ export interface ClauseSnippetTagPayload {
   userId: string;
   startPosition: Position;
   endPosition: Position;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tagValues: any[];
   createdAt: Date;
   contractSliceId: string;
@@ -98,10 +99,10 @@ export interface Value {
 export interface Diff {
   startIndex: number;
   endIndex: number;
-  payload: PayloadType;
+  payload: DiffPayloadType;
 }
 
-export enum PayloadType {
+export enum DiffPayloadType {
   Del = 'DEL',
   DelBlock = 'DEL_BLOCK',
   Ins = 'INS',

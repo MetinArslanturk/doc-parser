@@ -2,19 +2,13 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { useRef, useState } from 'react';
 import cn from 'classnames';
 import documentData from './assets/document.json';
-import {
-  IDocument,
-  DescriptorType,
-  ParagraphAlignment,
-  PayloadType,
-  Descriptor,
-} from './types/document';
+import { IDocument, DescriptorType, ParagraphAlignment, DiffPayloadType, Descriptor } from './types/document';
 import useOnClickOutside from './hooks/useOnClickOutside';
 
 const App = () => {
-  const [definitionPopover, setDefinitionPopover] = useState<
-    { pIndex: number; tokenIndex: number } | undefined
-  >(undefined);
+  const [definitionPopover, setDefinitionPopover] = useState<{ pIndex: number; tokenIndex: number } | undefined>(
+    undefined,
+  );
   const [popoverYPosition, setPopoverYPosition] = useState(0);
   const definitionPopoverRef = useRef<HTMLSpanElement>(null);
 
@@ -35,8 +29,7 @@ const App = () => {
 
   const windowWidth = window.innerWidth;
   const halfWindow = windowWidth / 2;
-  const initialAreaWidth =
-    416 < halfWindow ? (1280 < halfWindow ? 1280 : halfWindow) : 416;
+  const initialAreaWidth = 416 < halfWindow ? (1280 < halfWindow ? 1280 : halfWindow) : 416;
 
   const maxSentenceCount = (maxLength * 8) / initialAreaWidth;
 
@@ -113,10 +106,7 @@ const App = () => {
                     {firstLineIndentationLevel !== 0 && (
                       <span
                         style={{
-                          marginLeft:
-                            firstLineIndentationLevel -
-                            indentationLevel +
-                            'rem',
+                          marginLeft: firstLineIndentationLevel - indentationLevel + 'rem',
                         }}
                       ></span>
                     )}
@@ -124,7 +114,7 @@ const App = () => {
                     {tokens.map((token, tokenIndex) => {
                       let combinedClassName = 'p-text';
                       const formattingDescriptor = token.descriptors.find(
-                        (desc) => desc.type === DescriptorType.Formatting
+                        (desc) => desc.type === DescriptorType.Formatting,
                       );
                       const formatting = formattingDescriptor?.formatting;
                       if (formatting) {
@@ -135,34 +125,29 @@ const App = () => {
                         });
                       }
 
-                      const diffDescriptor = token.descriptors.find(
-                        (desc) => desc.type === DescriptorType.Diff
-                      );
+                      const diffDescriptor = token.descriptors.find((desc) => desc.type === DescriptorType.Diff);
 
                       const diff = diffDescriptor?.diff;
 
                       if (diff) {
                         let diffClassName = '';
-                        if (diff.payload === PayloadType.Del) {
+                        if (diff.payload === DiffPayloadType.Del) {
                           diffClassName = 'text-red-600 line-through';
-                        } else if (diff.payload === PayloadType.DelBlock) {
+                        } else if (diff.payload === DiffPayloadType.DelBlock) {
                           diffClassName = 'text-green-600 line-through';
-                        } else if (diff.payload === PayloadType.Ins) {
+                        } else if (diff.payload === DiffPayloadType.Ins) {
                           diffClassName = 'text-blue-600 underline';
-                        } else if (diff.payload === PayloadType.Move) {
+                        } else if (diff.payload === DiffPayloadType.Move) {
                           diffClassName = 'text-green-600';
-                        } else if (diff.payload === PayloadType.Noop) {
+                        } else if (diff.payload === DiffPayloadType.Noop) {
                           diffClassName = '';
                         }
 
-                        combinedClassName = cn(
-                          combinedClassName,
-                          diffClassName
-                        );
+                        combinedClassName = cn(combinedClassName, diffClassName);
                       }
 
                       const definitionDescriptor = token.descriptors.find(
-                        (desc) => desc.type === DescriptorType.Definition
+                        (desc) => desc.type === DescriptorType.Definition,
                       ) as Descriptor | undefined;
 
                       const definition = definitionDescriptor?.definition;
@@ -170,49 +155,36 @@ const App = () => {
                       if (definition) {
                         combinedClassName = cn(
                           combinedClassName,
-                          'underline decoration-dotted hover:decoration-solid hover:cursor-pointer inline-block'
+                          'underline decoration-dotted hover:decoration-solid hover:cursor-pointer inline-block',
                         );
                       }
 
                       const definitionSourceDescriptor = token.descriptors.find(
-                        (desc) => desc.type === DescriptorType.DefinitionSource
+                        (desc) => desc.type === DescriptorType.DefinitionSource,
                       );
 
-                      const definitionSource =
-                        definitionSourceDescriptor?.definitionSource;
+                      const definitionSource = definitionSourceDescriptor?.definitionSource;
 
                       if (definitionSource) {
-                        combinedClassName = cn(
-                          combinedClassName,
-                          'underline decoration-dotted hover:decoration-solid'
-                        );
+                        combinedClassName = cn(combinedClassName, 'underline decoration-dotted hover:decoration-solid');
                       }
 
                       const searchFilterDescriptor = token.descriptors.find(
-                        (desc) =>
-                          desc.type === DescriptorType.SearchResult ||
-                          desc.type === DescriptorType.FilterText
+                        (desc) => desc.type === DescriptorType.SearchResult || desc.type === DescriptorType.FilterText,
                       );
 
                       if (searchFilterDescriptor) {
-                        combinedClassName = cn(
-                          combinedClassName,
-                          'bg-yellow-200'
-                        );
+                        combinedClassName = cn(combinedClassName, 'bg-yellow-200');
                       }
 
                       const clauseSnippetDescriptor = token.descriptors.find(
-                        (desc) => desc.type === DescriptorType.ClauseSnippetTag
+                        (desc) => desc.type === DescriptorType.ClauseSnippetTag,
                       );
 
-                      const clauseSnippetTag =
-                        clauseSnippetDescriptor?.clauseSnippetTag;
+                      const clauseSnippetTag = clauseSnippetDescriptor?.clauseSnippetTag;
 
                       if (clauseSnippetTag) {
-                        combinedClassName = cn(
-                          combinedClassName,
-                          'bg-gray-300'
-                        );
+                        combinedClassName = cn(combinedClassName, 'bg-gray-300');
                       }
 
                       if (tokenIndex === definitionPopover?.tokenIndex) {
@@ -228,18 +200,12 @@ const App = () => {
                             definition
                               ? (e) => {
                                   const elementClickedYDistance =
-                                    e.clientY -
-                                    e.currentTarget.getBoundingClientRect().top;
+                                    e.clientY - e.currentTarget.getBoundingClientRect().top;
 
-                                  const parentRect =
-                                    // @ts-ignore
-                                    e.currentTarget.parentElement.getBoundingClientRect();
-                                  setPopoverYPosition(
-                                    e.clientY -
-                                      parentRect.top -
-                                      elementClickedYDistance +
-                                      5
-                                  );
+                                  const parentRect = (
+                                    e.currentTarget.parentElement as HTMLElement
+                                  ).getBoundingClientRect();
+                                  setPopoverYPosition(e.clientY - parentRect.top - elementClickedYDistance + 5);
                                   console.log('Clicked definition');
                                   setDefinitionPopover({
                                     pIndex: docItem.index,
