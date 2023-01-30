@@ -1,6 +1,6 @@
 import { Virtualizer } from '@tanstack/react-virtual';
 import cn from 'classnames';
-import { useRef, useState } from 'react';
+import useDefinitionPopover from '../../../hooks/useDefinitionPopover';
 import useOnClickOutside from '../../../hooks/useOnClickOutside';
 import { IDocument } from '../../../types/document';
 import { DEFAULT_PARAGRAPH_ALIGNMENT_CLASS, PARAGRAPH_ALIGNMENT_CLASS_MAPPING } from '../../../utils/constants';
@@ -8,16 +8,21 @@ import DocumentDefinitionPopover from './DocumentDefinitionPopover';
 import DocumentToken from './DocumentToken';
 
 interface Props {
-  paragraphItem: IDocument;
   paragraphIndex: number;
   virtualizer: Virtualizer<HTMLDivElement, Element>;
+  docData: IDocument[];
+  asPopover?: boolean;
+  definitionPopoverSpecs: ReturnType<typeof useDefinitionPopover>;
 }
-const DocumentParagraph = ({ paragraphItem, paragraphIndex, virtualizer }: Props) => {
-  const [definitionPopover, setDefinitionPopover] = useState<{ pIndex: number; tokenIndex: number } | undefined>(
-    undefined,
-  );
-  const [popoverYPosition, setPopoverYPosition] = useState(0);
-  const definitionPopoverRef = useRef<HTMLSpanElement>(null);
+const DocumentParagraph = ({ paragraphIndex, virtualizer, docData, asPopover, definitionPopoverSpecs }: Props) => {
+  const { definitionPopover, setDefinitionPopover, definitionPopoverRef, popoverYPosition } = definitionPopoverSpecs;
+  const paragraphItem = docData[paragraphIndex];
+  const popoverDefinitionDocData = definitionPopover?.definitionPayload
+    ? docData.slice(
+        definitionPopover.definitionPayload.value.startIndex,
+        definitionPopover.definitionPayload.value.endIndex,
+      )
+    : [];
 
   useOnClickOutside(definitionPopoverRef, () => {
     setDefinitionPopover(undefined);
@@ -35,12 +40,16 @@ const DocumentParagraph = ({ paragraphItem, paragraphIndex, virtualizer }: Props
       })}
       ref={virtualizer.measureElement}
     >
-      <p
+      <div
         className={cn(alignmentClass, 'whitespace-pre-wrap', { footnote: isFootnote })}
         style={{ marginLeft: indentationLevel + 'rem' }}
       >
         {definitionPopover && paragraphIndex === definitionPopover.pIndex && (
-          <DocumentDefinitionPopover popoverYPosition={popoverYPosition} definitionPopoverRef={definitionPopoverRef} />
+          <DocumentDefinitionPopover
+            popoverYPosition={popoverYPosition}
+            definitionPopoverRef={definitionPopoverRef}
+            definitionDocData={popoverDefinitionDocData}
+          />
         )}
         {firstLineIndentationLevel !== 0 && (
           <span
@@ -52,16 +61,15 @@ const DocumentParagraph = ({ paragraphItem, paragraphIndex, virtualizer }: Props
         {listItemLabel && <span>{listItemLabel}&nbsp;</span>}
         {tokens.map((token, tokenIndex) => (
           <DocumentToken
+            asPopover={asPopover}
             token={token}
             tokenIndex={tokenIndex}
             key={tokenIndex}
-            setPopoverYPosition={setPopoverYPosition}
-            setDefinitionPopover={setDefinitionPopover}
-            definitionPopover={definitionPopover}
+            definitionPopoverSpecs={definitionPopoverSpecs}
             paragraphIndex={paragraphIndex}
           />
         ))}
-      </p>
+      </div>
     </div>
   );
 };

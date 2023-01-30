@@ -28,7 +28,7 @@ const definitonDescriptorToClassName = (combinedClassName: string, descriptor: D
     return combinedClassName;
   }
 
-  return cn(combinedClassName, 'underline decoration-dotted hover:decoration-solid hover:cursor-pointer inline-block');
+  return cn(combinedClassName, 'underline decoration-dotted hover:decoration-solid inline-block');
 };
 
 const definitionSourceDescriptorToClassName = (combinedClassName: string, descriptor: Descriptor) => {

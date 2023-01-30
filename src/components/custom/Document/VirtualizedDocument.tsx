@@ -2,14 +2,18 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { useRef } from 'react';
 import { IDocument } from '../../../types/document';
 import DocumentParagraph from './DocumentParagraph';
+import useDefinitionPopover from '../../../hooks/useDefinitionPopover';
 
 interface Props {
   docData: IDocument[];
   estimatedSize: number;
+  asPopover?: boolean;
 }
-const VirtualizedDocument = ({ docData, estimatedSize }: Props) => {
+const VirtualizedDocument = ({ docData, estimatedSize, asPopover = false }: Props) => {
   const scrollableParentRef = useRef<HTMLDivElement>(null);
   const count = docData.length;
+
+  const definitionPopoverSpecs = useDefinitionPopover();
 
   const virtualizer = useVirtualizer({
     count,
@@ -36,9 +40,11 @@ const VirtualizedDocument = ({ docData, estimatedSize }: Props) => {
           {docItems.map(({ index }) => (
             <DocumentParagraph
               key={index}
-              paragraphItem={docData[index]}
               paragraphIndex={index}
               virtualizer={virtualizer}
+              docData={docData}
+              asPopover={asPopover}
+              definitionPopoverSpecs={definitionPopoverSpecs}
             />
           ))}
         </div>

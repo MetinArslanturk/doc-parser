@@ -1,62 +1,55 @@
 import cn from 'classnames';
-import { DescriptorType, Token } from '../../../types/document';
+import useDefinitionPopover from '../../../hooks/useDefinitionPopover';
+import { DefinitionPayload, DescriptorType, Token } from '../../../types/document';
 import { INITIAL_TOKEN_CLASS_NAME } from '../../../utils/constants';
 import { mapDescriptorsToClassName } from '../../../utils/mapDescriptorToClass';
 import DownArrowIcon from '../../elements/DownArrowIcon';
+
+export type DefinitionPopoverState =
+  | {
+      pIndex: number;
+      tokenIndex: number;
+      definitionPayload: DefinitionPayload;
+    }
+  | undefined;
 
 interface Props {
   tokenIndex: number;
   token: Token;
   paragraphIndex: number;
-  setPopoverYPosition: React.Dispatch<React.SetStateAction<number>>;
-  setDefinitionPopover: React.Dispatch<
-    React.SetStateAction<
-      | {
-          pIndex: number;
-          tokenIndex: number;
-        }
-      | undefined
-    >
-  >;
-  definitionPopover:
-    | {
-        pIndex: number;
-        tokenIndex: number;
-      }
-    | undefined;
+  asPopover?: boolean;
+  definitionPopoverSpecs: ReturnType<typeof useDefinitionPopover>;
 }
-const DocumentToken = ({
-  tokenIndex,
-  token,
-  setPopoverYPosition,
-  definitionPopover,
-  paragraphIndex,
-  setDefinitionPopover,
-}: Props) => {
-  const hasDefinitionDescriptor = token.descriptors.some((desc) => desc.type === DescriptorType.Definition);
+const DocumentToken = ({ tokenIndex, token, asPopover, paragraphIndex, definitionPopoverSpecs }: Props) => {
+  const { setPopoverYPosition, definitionPopover, setDefinitionPopover } = definitionPopoverSpecs;
+  const definition = token.descriptors.find((desc) => desc.type === DescriptorType.Definition)?.definition;
 
   const isPopoverOpenForToken =
     definitionPopover && paragraphIndex === definitionPopover.pIndex && tokenIndex === definitionPopover.tokenIndex;
 
   const combinedClassName = cn(mapDescriptorsToClassName(INITIAL_TOKEN_CLASS_NAME, token.descriptors), {
     'pt-40 relative': isPopoverOpenForToken,
+    'hover:cursor-pointer': !!definition && !asPopover,
   });
 
   return (
     <span
       className={combinedClassName}
-      role={hasDefinitionDescriptor ? 'button' : undefined}
+      role={definition && !asPopover ? 'button' : undefined}
       onClick={
-        hasDefinitionDescriptor
+        definition
           ? (e) => {
+              if (asPopover) {
+                return;
+              }
               const elementClickedYDistance = e.clientY - e.currentTarget.getBoundingClientRect().top;
 
               const parentRect = (e.currentTarget.parentElement as HTMLElement).getBoundingClientRect();
               setPopoverYPosition(e.clientY - parentRect.top - elementClickedYDistance + 8);
-              console.log('Clicked definition');
               setDefinitionPopover({
                 pIndex: paragraphIndex,
                 tokenIndex,
+                definitionPayload: definition.payload,
               });
             }
           : undefined
