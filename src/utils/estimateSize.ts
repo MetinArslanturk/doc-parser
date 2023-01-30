@@ -13,7 +13,7 @@ import {
 export const getEstimatedParagprahSize = (currentWindowWidth: number | undefined, docData: IDocument[]) => {
   let maxLength = DEFAULT_MAX_TEXT_LENGTH;
 
-  docData.forEach((doc) => {
+  docData?.forEach((doc) => {
     if (doc.text.length > maxLength) {
       maxLength = doc.text.length;
     }

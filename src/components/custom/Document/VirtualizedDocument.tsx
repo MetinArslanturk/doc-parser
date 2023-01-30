@@ -1,8 +1,9 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { IDocument } from '../../../types/document';
 import DocumentParagraph from './DocumentParagraph';
 import useDefinitionPopover from '../../../hooks/useDefinitionPopover';
+import { useSearchParams } from 'react-router-dom';
 
 interface Props {
   docData: IDocument[];
@@ -13,6 +14,9 @@ const VirtualizedDocument = ({ docData, estimatedSize, asPopover = false }: Prop
   const scrollableParentRef = useRef<HTMLDivElement>(null);
   const count = docData.length;
 
+  const [searchParams] = useSearchParams();
+  const indexParam = searchParams.get('index');
+
   const definitionPopoverSpecs = useDefinitionPopover();
 
   const virtualizer = useVirtualizer({
@@ -20,6 +24,14 @@ const VirtualizedDocument = ({ docData, estimatedSize, asPopover = false }: Prop
     getScrollElement: () => scrollableParentRef.current,
     estimateSize: () => estimatedSize,
   });
+
+  useEffect(() => {
+    if (indexParam && !isNaN(indexParam as never) && !asPopover) {
+      setTimeout(() => {
+        virtualizer.scrollToIndex(Number(indexParam));
+      }, 100);
+    }
+  }, [indexParam, virtualizer, asPopover]);
 
   const docItems = virtualizer.getVirtualItems();
 

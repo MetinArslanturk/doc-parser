@@ -49,6 +49,9 @@ const DocumentParagraph = ({ paragraphIndex, virtualizer, docData, asPopover, de
             popoverYPosition={popoverYPosition}
             definitionPopoverRef={definitionPopoverRef}
             definitionDocData={popoverDefinitionDocData}
+            definitionPayload={definitionPopover.definitionPayload}
+            setDefinitionPopover={setDefinitionPopover}
+            virtualizer={virtualizer}
           />
         )}
         {firstLineIndentationLevel !== 0 && (
