@@ -30,6 +30,7 @@ const DocumentDefinitionPopover = ({
     <span
       className="absolute h-40 border border-gray-500 bg-white rounded-md left-0 transition-opacity duration-300 z-40 inline-block popover absolute-center cursor-pointer shadow-md"
       style={{ top: popoverYPosition + 'px' }}
+      data-testid="popover"
       onClick={(e) => {
         e.stopPropagation();
         setDefinitionPopover(undefined);
