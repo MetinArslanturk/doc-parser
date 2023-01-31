@@ -9,6 +9,9 @@
 body {
   font-family: 'Times New Roman', Times, serif;
   font-size: 16px;
+  background: #0f2027; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #2c5364, #203a43, #0f2027); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
 }
 
 .footnote {
@@ -19,15 +22,8 @@ body {
   width: 98%;
 }
 
-.homepage-bg {
-  background: #0f2027; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #2c5364, #203a43, #0f2027); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #2c5364,
-    #203a43,
-    #0f2027
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+.h-doc {
+  height: calc(100vh - 16px);
 }
 
 .absolute-center {

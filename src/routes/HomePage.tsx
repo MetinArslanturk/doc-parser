@@ -7,7 +7,7 @@ import { useState } from 'react';
 const HomePage = () => {
   const [preMapClasses, setPreMapClasses] = useState(false);
   return (
-    <div className="flex flex-col min-h-screen w-full px-6 m-auto text-lg leading-7 homepage-bg text-white sm:px-14 md:px-24 lg:px-32">
+    <div className="flex flex-col min-h-screen w-full px-6 m-auto text-lg leading-7 text-white sm:px-14 md:px-24 lg:px-32">
       <main className="flex-grow">
         <article className="flex flex-col items-center justify-center h-full mt-10 text-center">
           <header className="flex flex-col items-center mb-3">
